@@ -1,8 +1,8 @@
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 
 //main class
@@ -40,6 +40,7 @@ class Notepad implements NotepadComponents
     {
         System.out.print("Instance Created");
         frame = new JFrame(title);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         
         //setting Notepad properties
@@ -75,59 +76,42 @@ class Notepad implements NotepadComponents
         menuBar.setSize(500, 20);
         menuBar.setVisible(true);
         menuBar.setBackground(Color.WHITE);
+        
 
         /**** adding menu "FILE" ****/
         JMenu fileMenu = new JMenu("File");
+
         JMenuItem saveItem = new JMenuItem("Save");     //menuItem "SAVE"
-        saveItem.addActionListener(new ActionListener() {    //adding save function 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                menuMethods.save();
-            }
-        });
-        JMenuItem exitItem = new JMenuItem("Exit");    //menuItem "EXIT"
-        exitItem.addActionListener(new ActionListener() {   //adding exit function
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        JMenuItem newWindowItem = new JMenuItem("New Window");  //menuItem "NEW WINDOW"
-        newWindowItem.addActionListener(new ActionListener() {       //adding new window function
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                notepadApp.main(null);
-            }
-        });
+        saveItem.addActionListener(e -> menuMethods.save()); //adding save function
+
+        JMenuItem exitItem = new JMenuItem("Exit");         //menuItem "EXIT"
+        exitItem.addActionListener(e -> System.exit(0));  //adding exit function
+
+        JMenuItem newWindowItem = new JMenuItem("New Window");          //menuItem "NEW WINDOW"
+        newWindowItem.addActionListener(e ->  notepadApp.main(null));   //adding new window function
+        
         fileMenu.add(saveItem);
         fileMenu.add(newWindowItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
         menuBar.add(fileMenu);
 
+
         /**** adding menu "VIEW" ****/
         JMenu viewMenu = new JMenu("View");                 
-        JMenuItem theme = new JMenuItem("Dark/Light Theme");    //menuItem "THEME"
-        theme.addActionListener(new ActionListener() {               //adding theme alter funtcion
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                menuMethods.setTheme(fileMenu, viewMenu);
-            }
-        });
+        JMenuItem theme = new JMenuItem("Dark/Light Theme");                //menuItem "THEME"
+        theme.addActionListener(e -> menuMethods.setTheme(fileMenu, viewMenu));  //adding theme function
+
         JMenuItem zoomInMenuItem = new JMenuItem("Zoom In");    //menuItem "ZOOM IN"
-        zoomInMenuItem.addActionListener(new ActionListener() {      //adding zoom in function
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                textArea.setFont(new Font("Arial", Font.PLAIN, fontSize+=2));
-            }
-        });
+        zoomInMenuItem.addActionListener(                            //adding zoom in function
+            e -> textArea.setFont(new Font("Arial", Font.PLAIN, fontSize+=2))
+        );
+        
         JMenuItem zoomOutMenuItem = new JMenuItem("Zoom Out");    //menuItem "ZOOM OUT"
-        zoomOutMenuItem.addActionListener(new ActionListener() {      //adding zoom in function
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                textArea.setFont(new Font("Arial", Font.PLAIN, fontSize-=2));
-            }
-        });
+        zoomOutMenuItem.addActionListener(                             //adding zoom out function
+            e -> textArea.setFont(new Font("Arial", Font.PLAIN, fontSize-=2))
+        );
+
         viewMenu.add(zoomOutMenuItem);
         viewMenu.add(zoomInMenuItem);
         viewMenu.addSeparator();
